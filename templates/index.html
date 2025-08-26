@@ -9,15 +9,28 @@
 <body>
     <div class="container">
         <h1>テキスト感情分析</h1>
-        <p>分析したい文章を入力してください。</p>
-        <textarea id="text-input" rows="5" placeholder="ここに文章を入力..."></textarea>
-        <button id="analyze-button">分析する</button>
         
-        <div id="result-area">
+        <div class="input-section">
+            <p>分析したい文章を入力してください。</p>
+            <textarea id="text-input" rows="5" placeholder="ここに文章を入力..."></textarea>
+            <button id="analyze-text-button">テキストを分析する</button>
+        </div>
+
+        <div class="divider">または</div>
+
+        <div class="input-section">
+            <p>文章が記載された画像ファイルをアップロードしてください。</p>
+            <div id="drop-zone">
+                <p>ここにファイルをドラッグ＆ドロップ<br>またはクリックしてファイルを選択</p>
+                <input type="file" id="file-input" accept="image/*" hidden>
             </div>
+            <div id="image-preview-container"></div>
+            <button id="analyze-image-button" disabled>画像を分析する</button>
+        </div>
+        
+        <div id="result-area"></div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-
