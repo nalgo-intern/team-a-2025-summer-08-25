@@ -19,6 +19,8 @@ analyzeButton.addEventListener('click', async () => {
         return;
     }
 
+    textInput.value = '';
+
     try {
         const response = await fetch('/analyze', {
             method: 'POST',
@@ -45,6 +47,8 @@ analyzeButton.addEventListener('click', async () => {
         });
         
         resultArea.innerHTML = htmlContent;
+
+        resultArea.scrollIntoView({ behavior: 'smooth' });
 
     } catch (error) {
         console.error('エラー:', error);
