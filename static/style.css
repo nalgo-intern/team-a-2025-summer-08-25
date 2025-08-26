@@ -101,3 +101,11 @@ button:disabled {
 #result-area h2 {
     margin-top: 0;
 }
+
+.result-image {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 1em;
+}

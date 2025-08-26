@@ -1,3 +1,4 @@
+// --- DOM要素の取得 ---
 const textInput = document.getElementById('text-input');
 const analyzeTextButton = document.getElementById('analyze-text-button');
 const resultArea = document.getElementById('result-area');
@@ -27,6 +28,8 @@ analyzeTextButton.addEventListener('click', async () => {
         return;
     }
 
+    textInput.value = '';
+
     try {
         const response = await fetch('/analyze', {
             method: 'POST',
@@ -47,29 +50,38 @@ analyzeImageButton.addEventListener('click', async () => {
         displayError('画像ファイルを選択してください。');
         return;
     }
+
+    // 画像プレビューのsrcを取得
+    const previewImageSrc = imagePreviewContainer.querySelector('img')?.src;
     
     // FormDataオブジェクトを作成してファイルを追加
     const formData = new FormData();
     formData.append('image_file', selectedFile);
 
+    // 送信前にUIをリセット
+    imagePreviewContainer.innerHTML = '';
+    selectedFile = null;
+    fileInput.value = ''; // 同じファイルを選択できるようにリセット
+    analyzeImageButton.disabled = true;
+
+
     try {
         const response = await fetch('/analyze_image', {
             method: 'POST',
-            body: formData, // FormDataを使う場合、headersは自動で設定される
+            body: formData,
         });
         if (!response.ok) throw new Error('サーバーエラー');
         const data = await response.json();
-        displayResults(data);
+        displayResults(data, previewImageSrc);
     } catch (error) {
         displayError('画像分析中にエラーが発生しました。');
     }
 });
 
 // 3. 画像ドロップゾーンのイベント
-dropZone.addEventListener('click', () => fileInput.click()); // クリック時にファイル選択ダイアログを開く
-
+dropZone.addEventListener('click', () => fileInput.click());
 dropZone.addEventListener('dragover', (e) => {
-    e.preventDefault(); // ブラウザのデフォルト動作を無効化
+    e.preventDefault();
     dropZone.classList.add('dragover');
 });
 
@@ -81,16 +93,12 @@ dropZone.addEventListener('drop', (e) => {
     e.preventDefault();
     dropZone.classList.remove('dragover');
     const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        handleFile(files[0]);
-    }
+    if (files.length > 0) handleFile(files[0]);
 });
 
 // 4. ファイルインプットの変更イベント
 fileInput.addEventListener('change', () => {
-    if (fileInput.files.length > 0) {
-        handleFile(fileInput.files[0]);
-    }
+    if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
 });
 
 
@@ -98,33 +106,32 @@ fileInput.addEventListener('change', () => {
 
 /** ファイルが選択されたときの共通処理 */
 function handleFile(file) {
-    // 画像ファイルかどうかの簡易チェック
     if (!file.type.startsWith('image/')) {
         displayError('画像ファイルを選択してください。');
         return;
     }
-    
     selectedFile = file;
-
-    // 画像プレビューを表示
     const reader = new FileReader();
     reader.onload = () => {
         imagePreviewContainer.innerHTML = `<img src="${reader.result}" alt="選択された画像">`;
     };
     reader.readAsDataURL(file);
-    
-    // 画像分析ボタンを有効化
     analyzeImageButton.disabled = false;
 }
 
 /** 分析結果を表示する共通関数 */
-function displayResults(data) {
+function displayResults(data, imageSrc = null) {
     if (data.error) {
         displayError(data.error);
         return;
     }
     
     let htmlContent = '<h2>分析結果</h2>';
+
+    if (imageSrc) {
+        htmlContent += `<img src="${imageSrc}" alt="分析対象の画像" class="result-image">`;
+    }
+
     if (data["入力された文章"]) {
         htmlContent += `<p><strong>入力された文章:</strong> ${data["入力された文章"]}</p>`;
     }
@@ -134,9 +141,13 @@ function displayResults(data) {
         }
     });
     resultArea.innerHTML = htmlContent;
+
+    resultArea.scrollIntoView({ behavior: 'smooth' });
 }
 
 /** エラーメッセージを表示する共通関数 */
 function displayError(message) {
     resultArea.innerHTML = `<p style="color: red;">${message}</p>`;
+
+    resultArea.scrollIntoView({ behavior: 'smooth' });
 }
