@@ -1,4 +1,7 @@
 from flask import Flask, request, jsonify, render_template
+import evaluate_statement as es
+
+es.get_runtime()
 
 app = Flask(__name__)
 
@@ -12,14 +15,9 @@ def analyze():
     data = request.get_json()
     input_text = data['text']
 
-    # --- 感情分析処理 ---
-
-    dummy_scores = {
-        "入力された文章": input_text,
-        "喜び": 3, "悲しみ": 0, "怒り": 1, "驚き": 2,
-        "恐怖": 0, "嫌悪": 0, "信頼": 2, "期待": 1
-    }
-    return jsonify(dummy_scores)
+    model_result = es.analyze_text(input_text)
+    
+    return jsonify(model_result)
 
 # 画像分析API
 @app.route('/analyze_image', methods=['POST'])
@@ -39,20 +37,9 @@ def analyze_image():
     # ダミーのテキストを返す
     extracted_text = "画像から抽出したテキストです。今日は良い天気ですね。"
 
-    # --- 感情分析処理 ---
-
-    dummy_scores = {
-        "入力された文章": extracted_text,
-        "喜び": 3,
-        "悲しみ": 0,
-        "怒り": 0,
-        "驚き": 1,
-        "恐怖": 0,
-        "嫌悪": 0,
-        "信頼": 3,
-        "期待": 2
-    }
-    return jsonify(dummy_scores)
+    model_result = es.analyze_text(extracted_text)
+    
+    return jsonify(model_result)
 
 
 if __name__ == '__main__':
