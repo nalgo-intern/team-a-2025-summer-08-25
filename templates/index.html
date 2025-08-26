@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>感情分析アプリ (プロトタイプ)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>テキスト感情分析</h1>
+        <p>分析したい文章を入力してください。</p>
+        <textarea id="text-input" rows="5" placeholder="ここに文章を入力..."></textarea>
+        <button id="analyze-button">分析する</button>
+        
+        <div id="result-area">
+            </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
