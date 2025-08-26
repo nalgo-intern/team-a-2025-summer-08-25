@@ -1,4 +1,8 @@
+# pip install Flask
 from flask import Flask, request, jsonify, render_template
+import evaluate_statement as es
+
+es.get_runtime()
 
 app = Flask(__name__)
 
@@ -11,7 +15,10 @@ def analyze():
     # フロントエンドから送られてきたJSONデータを取得
     data = request.get_json()
     input_text = data['text']
-
+    
+    result = es.analyze_text(input_text)
+    print(result)
+    
     # 分析結果の取得（今回はダミーを使用）
     dummy_scores = {
         "入力された文章": input_text,
