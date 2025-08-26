@@ -1,6 +1,5 @@
 const textInput = document.getElementById('text-input');
 const analyzeButton = document.getElementById('analyze-button');
-// ★★★ HTMLの id="result-area" を持つ要素を正確に取得します ★★★
 const resultArea = document.getElementById('result-area');
 
 // 表示順を固定するための配列を定義
