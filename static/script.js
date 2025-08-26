@@ -33,25 +33,65 @@ analyzeButton.addEventListener('click', async () => {
         }
 
         const data = await response.json();
-        resultArea.innerHTML = ''; 
-        let htmlContent = '<h2>分析結果</h2>';
-
-        if (data["入力された文章"]) {
-            htmlContent += `<p><strong>入力された文章:</strong> ${data["入力された文章"]}</p>`;
-        }
-
-        emotionOrder.forEach(emotion => {
-            if (data.hasOwnProperty(emotion)) {
-                htmlContent += `<p><strong>${emotion}:</strong> ${data[emotion]}</p>`;
-            }
-        });
-        
-        resultArea.innerHTML = htmlContent;
-
-        resultArea.scrollIntoView({ behavior: 'smooth' });
+        displayResults(data);
 
     } catch (error) {
-        console.error('エラー:', error);
-        resultArea.innerHTML = `<p style="color: red;">分析中にエラーが発生しました。</p>`;
+        displayError('テキスト分析中にエラーが発生しました。');
     }
 });
+
+/**
+ * 確率をパーセント表示にフォーマットするヘルパー関数
+ * @param {number} p - 確率 (0.0 to 1.0)
+ * @returns {string} - "xx.x%" 形式の文字列
+ */
+const pct = (p) => (p * 100).toFixed(1) + '%';
+
+/**
+ * 分析結果を詳細に表示する関数
+ * @param {object} data - バックエンドから返された分析結果オブジェクト
+ */
+function displayResults(data) {
+    if (data.error) {
+        displayError(data.error);
+        return;
+    }
+
+    const pol_pred = data.polarity.pred;
+    const pol_detail = data.polarity.detail;
+    const emo_detail = data.emotion.detail;
+
+    let htmlContent = `
+        <h2>分析結果</h2>
+        
+        <div class="result-section">
+            <h3>▼ 入力文</h3>
+            <p class="input-text-result">${data.text}</p>
+        </div>
+
+        <div class="result-section">
+            <h3>▼ 極性（ネガ・ニュートラル・ポジ）</h3>
+            <p><strong>予測:</strong> ${pol_pred.label} / <strong>確率:</strong> ${pct(pol_pred.prob)} / <strong>程度:</strong> ${pol_pred.degree}</p>
+            <h4>内訳:</h4>
+            <ul class="detail-list">
+                ${pol_detail.map(d => `<li><span>${d.label}:</span> ${pct(d.prob)} (${d.degree})</li>`).join('')}
+            </ul>
+        </div>
+
+        <div class="result-section">
+            <h3>▼ 感情（8種類）</h3>
+            <ul class="detail-list">
+                ${emo_detail.map(d => `<li><span>${d.label}:</span> ${pct(d.prob)} (${d.degree})</li>`).join('')}
+            </ul>
+        </div>
+    `;
+
+    resultArea.innerHTML = htmlContent;
+    resultArea.scrollIntoView({ behavior: 'smooth' });
+}
+
+/** エラーメッセージを表示する共通関数 */
+function displayError(message) {
+    resultArea.innerHTML = `<p style="color: red;">${message}</p>`;
+    resultArea.scrollIntoView({ behavior: 'smooth' });
+}

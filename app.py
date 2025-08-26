@@ -16,8 +16,7 @@ def analyze():
     data = request.get_json()
     input_text = data['text']
     
-    result = es.analyze_text(input_text)
-    print(result)
+    model_result = es.analyze_text(input_text)
     
     # 分析結果の取得（今回はダミーを使用）
     dummy_scores = {
@@ -33,7 +32,7 @@ def analyze():
     }
 
     # 結果をJSON形式でフロントエンドに返す
-    return jsonify(dummy_scores)
+    return jsonify(model_result)
 
 if __name__ == '__main__':
     app.run(debug=True)
