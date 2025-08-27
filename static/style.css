@@ -150,3 +150,20 @@ button:disabled {
     font-weight: bold;
     text-transform: capitalize; /* 先頭を大文字に */
 }
+
+.positive,
+.negative,
+.neutral {
+    padding: 0.2em 0.5em; 
+    margin: 0 0.1em;     
+    border-radius: 1em; 
+    font-weight: bold; 
+}
+
+.positive {
+    background-color: rgba(54, 162, 235, 0.2);
+}
+
+.negative {
+    background-color: rgba(255, 99, 132, 0.2);
+}
