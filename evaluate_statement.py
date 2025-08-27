@@ -15,9 +15,6 @@ def degree_ja(p: float) -> str:
     if p >= 0.40: return "弱め"
     return "ごく弱い"
 
-def pct(p: float) -> str:
-    return f"{p*100:.1f}%"
-
 # =========================
 # ランタイム本体（シングルトン）
 # =========================
@@ -136,26 +133,3 @@ def get_runtime() -> _SentimentRuntime:
 def analyze_text(text: str) -> Dict[str, Any]:
     """アプリ側はこの関数を直接呼べばOK（モデルは常駐）。"""
     return get_runtime().analyze_text(text)
-
-def analyze_texts(texts: List[str]) -> List[Dict[str, Any]]:
-    """バッチ版。"""
-    return get_runtime().analyze_texts(texts)
-
-# （任意）整形表示
-def pretty_print(result: dict):
-    text = result["text"]
-    pol_pred = result["polarity"]["pred"]
-    pol_detail = result["polarity"]["detail"]
-    emo_detail = result["emotion"]["detail"]
-
-    print("▼ 入力文")
-    print(text)
-    print("\n▼ 極性（ネガ・ニュートラル・ポジ）")
-    print(f"  予測: {pol_pred['label']} / 確率: {pct(pol_pred['prob'])} / 程度: {pol_pred['degree']}")
-    print("  内訳:")
-    for d in pol_detail:
-        print(f"    - {d['label']:>8}: {pct(d['prob'])} ({d['degree']})")
-
-    print("\n▼ 感情（8種類すべて）")
-    for d in emo_detail:
-        print(f"    - {d['label']:>12}: {pct(d['prob'])} ({d['degree']})")
