@@ -153,18 +153,18 @@ function displayResults(data, imageSrc = null) {
         </div>
 
         <div class="result-section">
-            <h3>▼ 極性（ネガ・ニュートラル・ポジ）</h3>
-            <p><strong>予測:</strong> ${pol_pred.label} / <strong>確率:</strong> ${pct(pol_pred.prob)} / <strong>程度:</strong> ${pol_pred.degree}</p>
-            <h4>内訳:</h4>
+            <h3>▼ 感情（8種類）</h3>
             <ul class="detail-list">
-                ${pol_detail.map(d => `<li><span>${d.label}:</span> ${pct(d.prob)} (${d.degree})</li>`).join('')}
+                ${emo_detail.map(d => `<li><span>${d.icon} ${d.ja}:</span> ${pct(d.prob)} (${d.degree})</li>`).join('')}
             </ul>
         </div>
 
         <div class="result-section">
-            <h3>▼ 感情（8種類）</h3>
+            <h3>▼ 極性（ネガ・ニュートラル・ポジ）</h3>
+            <p><strong>予測:</strong> ${pol_pred.icon} ${pol_pred.ja} / <strong>確率:</strong> ${pct(pol_pred.prob)} / <strong>程度:</strong> ${pol_pred.degree}</p>
+            <h4>内訳:</h4>
             <ul class="detail-list">
-                ${emo_detail.map(d => `<li><span>${d.label}:</span> ${pct(d.prob)} (${d.degree})</li>`).join('')}
+                ${pol_detail.map(d => `<li><span>${d.icon} ${d.ja}:</span> ${pct(d.prob)} (${d.degree})</li>`).join('')}
             </ul>
         </div>
     `;
