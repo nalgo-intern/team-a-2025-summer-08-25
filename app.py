@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import evaluate_statement as es
+from PIL import Image
 
 es.get_runtime()
 
@@ -31,8 +32,11 @@ def analyze_image():
     # ファイル名が空でないかチェック
     if file.filename == '':
         return jsonify({"error": "ファイルが選択されていません"}), 400
-
+    
+    input_image = Image.open(file.stream)
+    
     # --- OCR処理 ---
+    # OCR(input_image) -> extracted_text
 
     # ダミーのテキストを返す
     extracted_text = "画像から抽出したテキストです。今日は良い天気ですね。"
