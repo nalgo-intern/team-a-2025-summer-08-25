@@ -1,4 +1,6 @@
-Flask==3.1.2
+fFlask==3.1.2
+pillow==8.4.0
+sentencepiece==0.2.1
 transformers==4.55.4 
 fugashi==1.5.1
 unidic-lite==1.0.8
