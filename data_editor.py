@@ -54,6 +54,6 @@ def extract_emotion(data, threshold=0.1):
             if emotion_data.get('prob', 0) > threshold
         ]
         # 抽出したリストで置き換え
-        data['emotion']['detail'] = filtered_details
+        data['emotion']['repre'] = filtered_details
 
     return data
