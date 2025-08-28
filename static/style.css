@@ -96,6 +96,18 @@ button:disabled {
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fafafa;
+
+    transition: background-color 0.5s ease;
+}
+
+#result-area.result-positive {
+    background-color: #e7f3ff; /* うっすら青く */
+    border-color: #b3d7ff;
+}
+
+#result-area.result-negative {
+    background-color: #ffebe9; /* うっすら赤く */
+    border-color: #ffc4bd;
 }
 
 #result-area h2 {

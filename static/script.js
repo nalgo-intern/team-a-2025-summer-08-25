@@ -136,6 +136,16 @@ function displayResults(data, imageSrc = null) {
         return;
     }
 
+    resultArea.classList.remove('result-positive', 'result-negative');
+
+    const polarityLabel = data.polarity.pred.label;
+
+    if (polarityLabel === 'positive') {
+        resultArea.classList.add('result-positive');
+    } else if (polarityLabel === 'negative') {
+        resultArea.classList.add('result-negative');
+    }
+
     const pol_pred = data.polarity.pred;
     const pol_detail = data.polarity.detail;
     const emo_detail = data.emotion.detail;
