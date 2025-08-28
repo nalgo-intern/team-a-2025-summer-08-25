@@ -163,21 +163,59 @@ function displayResults(data, imageSrc = null) {
             <h3>▼ 入力文</h3>
             <p class="input-text-result"><strong>${data.text}</strong><br><br><span class="positive">   </span>:ポジティブな印象  <span class="negative">   </span>:ネガティブな印象</p>
         </div>
+    `;
 
+    htmlContent += `
         <div class="result-section">
             <h3>▼ 感情</h3>
             <ul class="detail-list">
                 ${emo_repre.map(d => `<li><span>${d.icon} ${d.ja}</span> (${pct(d.prob)})</li>`).join('')}
             </ul>
+            <a href="#" class="toggle-details" data-target="emotion-details">詳細 ▼</a>
+            <div id="emotion-details" class="details-content">
+                <h4>全内訳:</h4>
+                <ul class="detail-list">
+                    ${emo_detail.map(d => `<li><span>${d.icon} ${d.ja}</span> (${pct(d.prob)})</li>`).join('')}
+                </ul>
+            </div>
         </div>
+    `;
 
+    // 極性のセクション
+    htmlContent += `
         <div class="result-section">
             <h3>▼ 極性（ネガティブ・普通・ポジティブ）</h3>
-            <p><strong>${pol_pred.icon} ${pol_pred.ja}</strong> (${pct(pol_pred.prob)})</p>
+            <p><strong>${pol_pred.ja}</strong> (${pct(pol_pred.prob)})</p>
+            <a href="#" class="toggle-details" data-target="polarity-details">詳細 ▼</a>
+            <div id="polarity-details" class="details-content">
+                <h4>全内訳:</h4>
+                <ul class="detail-list">
+                    ${pol_detail.map(d => `<li><span>${d.ja}</span> (${pct(d.prob)})</li>`).join('')}
+                </ul>
+            </div>
         </div>
     `;
 
     resultArea.innerHTML = htmlContent;
+
+    const toggleLinks = resultArea.querySelectorAll('.toggle-details');
+    toggleLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // リンクのデフォルト動作（ページ遷移）を無効化
+            const targetId = link.dataset.target;
+            const targetContent = document.getElementById(targetId);
+
+            if (targetContent) {
+                // 表示されているか確認
+                const isVisible = targetContent.style.display === 'block';
+                // 表示状態を切り替え
+                targetContent.style.display = isVisible ? 'none' : 'block';
+                // リンクのテキストを切り替え
+                link.textContent = isVisible ? '詳細 ▼' : '閉じる ▲';
+            }
+        });
+    });
+
     resultArea.scrollIntoView({ behavior: 'smooth' });
 }
 
