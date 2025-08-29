@@ -12,8 +12,8 @@ SNSのメッセージでは、意図せず自分の想定と異なる印象を�
 - 依存ライブラリは `requirements.txt` に記載
 - 以下のコマンドでアプリを起動可能:
 
-pip install -r requirements.txt
-python app.py
+- pip install -r requirements.txt
+- python app.py
 
 
 
