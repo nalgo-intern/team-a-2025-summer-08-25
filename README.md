@@ -1,3 +1,22 @@
+# メッセージの感情評価アプリケーション
+
+## 目的
+SNSのメッセージでは、意図せず自分の想定と異なる印象を与えてしまうことがある。  
+こういった事態を避けるために、本プロジェクトでは **テキストおよび画像内の文章から感情と極性を分析** し、  
+その結果を **Web上で分かりやすく可視化するシステム** を構築した。
+
+
+## 実行環境
+
+- Python 3.9.5
+- 依存ライブラリは `requirements.txt` に記載
+- 以下のコマンドでアプリを起動可能:
+
+pip install -r requirements.txt
+python app.py
+
+
+
 ## お借りしたデータ
 - [LoneWolfgang/bert-for-japanese-twitter-sentiment](https://huggingface.co/LoneWolfgang/bert-for-japanese-twitter-sentiment)
 - [Mizuiro-sakura/luke-japanese-large-sentiment-analysis-wrime](https://huggingface.co/Mizuiro-sakura/luke-japanese-large-sentiment-analysis-wrime)  
